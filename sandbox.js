@@ -180,6 +180,19 @@ Sandboss = {
     };
     this.post(message);
   },
+  dbInput: function () {
+    var message = {
+      type: 'db_input'
+    };
+    this.post(message);
+  },
+  log: function (data) {
+    var message = {
+      type: 'log',
+      data: data
+    }
+    this.post(message);
+  },
   // Bind all methods to its owner object.
   bindAll: function (obj) {
     for (method in obj) {

@@ -8,6 +8,10 @@
 
 class JSREPL
   constructor: ({@JSREPL_dir, @languages, ResultCallback, ErrorCallback, InputCallback, OutputCallback, LoadProgressCallback}) ->
+    db = openDatabase 'emscripted_input', '1.0', "Emscripted interpreters' input.", 1024
+    db.transaction (tx) ->
+      tx.executeSql 'DROP TABLE IF EXISTS input'
+      tx.executeSql 'CREATE TABLE input (text)'
     # The definition of the current language.
     @lang = null
     # The interpreter engine of the current language.
@@ -23,6 +27,8 @@ class JSREPL
     @worker = Sandboss.create
       baseScripts: baseScripts
       incoming:
+        'log': () ->
+          console.log arguments
         'out': OutputCallback
         'input': ->
           InputCallback (data) =>
@@ -32,6 +38,12 @@ class JSREPL
         'err': ErrorCallback
         'result': ResultCallback
         'progress': LoadProgressCallback
+        'db_input': ->
+          InputCallback (data) =>
+            console.log(data)
+            db.transaction (tx) ->
+              tx.executeSql "INSERT INTO input (text) VALUES ('#{data}')", [], ->
+                console.log arguments
 
   # Loads the specified language engine with its examples and calls the callback
   # once all loading is done.

@@ -358,6 +358,7 @@
   ]
   scripts: [
     'util/utf8.coffee'
+    'util/emscripted_input.coffee'
     {
       opera: 'extern/python/unclosured/python.js'
       chrome: 'extern/python/closured/python.js'
@@ -370,7 +371,7 @@
     'extern/python/reloop-closured'
   ]
   engine: 'langs/python/jsrepl_python.coffee'
-  worker_friendly: false
+  worker_friendly: true
   minifier: 'none'
 
 @JSREPL::Languages::Ruby =
