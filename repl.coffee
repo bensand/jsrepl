@@ -8,7 +8,7 @@
 
 class JSREPL
   constructor: ({@JSREPL_dir, @languages, ResultCallback, ErrorCallback, InputCallback, OutputCallback, LoadProgressCallback}) ->
-    db = openDatabase 'emscripted_input', '1.0', "Emscripted interpreters' input.", 1024
+    db = openDatabase 'replit_input', '1.0', "Emscripted interpreters' input.", 1024
     db.transaction (tx) ->
       tx.executeSql 'DROP TABLE IF EXISTS input'
       tx.executeSql 'CREATE TABLE input (text)'
@@ -40,6 +40,7 @@ class JSREPL
         'progress': LoadProgressCallback
         'db_input': ->
           InputCallback (data) =>
+            console.time 'input'
             console.log(data)
             db.transaction (tx) ->
               tx.executeSql "INSERT INTO input (text) VALUES ('#{data}')", [], ->

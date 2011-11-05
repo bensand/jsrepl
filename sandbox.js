@@ -184,6 +184,7 @@ Sandboss = {
     var message = {
       type: 'db_input'
     };
+    this.flush();
     this.post(message);
   },
   log: function (data) {
